@@ -8,7 +8,7 @@
           <div class="col">
             <h2>
               <small>
-                {{ open.length }} <span v-if="open.length == 1">Aufgabe</span><span v-else>Aufgaben</span>
+                2 Aufgaben
               </small>
             </h2>
           </div>
@@ -18,10 +18,16 @@
         </div>
 
         <ul class="list-unstyled">
-          <li v-for="item in items" :key="item.id">
-            <label :class="{'text-muted': item.done}">
-              <input type="checkbox" name="done" v-model="item.done">
-              {{ item.title }}
+          <li>
+            <label>
+              <input type="checkbox" name="done">
+              SoCraTes 2017 Demo vorbereiten
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" name="done">
+              better.co.at promoten
             </label>
           </li>
         </ul>
@@ -32,31 +38,6 @@
 
 <script>
 export default {
-  components: {
-  },
-
-  computed: {
-    open () {
-      return this.items.filter(item => !item.done)
-    }
-  },
-
-  data () {
-    return {
-      items: [
-        {
-          id: 1,
-          title: 'SoCraTes 2017 Demo vorbereiten',
-          done: false
-        },
-        {
-          id: 2,
-          title: 'better.co.at promoten',
-          done: false
-        }
-      ]
-    }
-  }
 }
 </script>
 
