@@ -1,28 +1,31 @@
 <template>
   <div class="todo-item form-check">
-    <label :class="{'todo-item-done': done}" class="form-check-label">
+    <label :class="{'todo-item-done': done, 'text-muted': done}" class="form-check-label">
       <input type="checkbox" name="done" v-model="done" class="form-check-input">
-      <span>{{ title }}</span>
+      <span @click.prevent="click()">{{ item.title }}</span>
     </label>
   </div>
 </template>
 
 <script>
 export default {
-  props: [
-    'item'
-  ],
+  props: ['item'],
 
-  data () {
-    return {
-      done: this.item.done,
-      title: this.item.title
+  computed: {
+    done: {
+      get () {
+        return this.item.done
+      },
+
+      set (value) {
+        this.$emit('done')
+      }
     }
   },
 
-  watch: {
-    done () {
-      this.$emit('done')
+  methods: {
+    click () {
+      this.$emit('click')
     }
   }
 }

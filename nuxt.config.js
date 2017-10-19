@@ -18,6 +18,10 @@ module.exports = {
   */
   loading: { color: '#3B8070' },
 
+  plugins: [
+    '~/plugins/focus'
+  ],
+
   css: [
     'bootstrap/scss/bootstrap.scss'
   ],

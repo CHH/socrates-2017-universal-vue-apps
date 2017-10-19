@@ -30,16 +30,26 @@ export const mutations = {
 
   done (state, { item, done }) {
     item.done = done
+
+    // Remove item from the current list if the item is closed and viewing only open items
+    // or the item is re-opened and viewing only closed items
+    if ((item.done && state.filter === 'open') || (!item.done && state.filter === 'closed')) {
+      state.items = state.items.filter((it) => {
+        return it !== item
+      })
+    }
   },
 
-  setId (state, { item, id }) {
-    item.id = id
+  update (state, { item, props }) {
+    const items = [...state.items]
+    const index = state.items.indexOf(item)
+    items[index] = {...item, ...props}
+
+    state.items = items
   },
 
-  remove (state, { itemToRemove }) {
-    state.items = state.items.filter((item) => {
-      return item.id !== itemToRemove.id
-    })
+  remove (state, { item }) {
+    state.items = state.items.filter(it => it !== item)
   },
 
   setFilter (state, { filter }) {
@@ -48,7 +58,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async loadAllItems ({ commit, state }) {
+  async refresh ({ commit, state }) {
     const items = await api.findAll({ filter: state.filter })
 
     commit('setItems', { items })
@@ -62,10 +72,15 @@ export const actions = {
       done: false
     })
 
-    commit('setId', { item, id: addedItem.id })
+    commit('update', {item, props: {id: addedItem.id}})
   },
 
-  async save ({ commit, state }, { item }) {
+  async removeItem ({ commit }, { item }) {
+    commit('remove', { item })
+    return api.remove(item)
+  },
+
+  async saveItem ({ commit, state }, { item }) {
     return api.save({
       id: item.id,
       title: item.title,
