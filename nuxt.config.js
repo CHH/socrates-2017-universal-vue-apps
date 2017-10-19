@@ -26,6 +26,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    vendor: ['localforage'],
 
     /*
     ** Run ESLint on save
