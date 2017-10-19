@@ -1,58 +1,64 @@
 <template>
-  <section class="container">
-    <div>
-      <logo/>
-      <h1 class="title">
-        todo
-      </h1>
-      <h2 class="subtitle">
-        SoCraTes 2017 demo project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
+  <div class="container-fluid">
+    <h1>Meine Aufgaben</h1>
+
+    <div class="row">
+      <div class="col">
+        <div class="row align-items-center">
+          <div class="col">
+            <h2>
+              <small>
+                {{ open.length }} <span v-if="open.length == 1">Aufgabe</span><span v-else>Aufgaben</span>
+              </small>
+            </h2>
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-primary btn-sm">Neue Aufgabe</button>
+          </div>
+        </div>
+
+        <ul class="list-unstyled">
+          <li v-for="item in items" :key="item.id">
+            <label :class="{'text-muted': item.done}">
+              <input type="checkbox" name="done" v-model="item.done">
+              {{ item.title }}
+            </label>
+          </li>
+        </ul>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
 export default {
   components: {
-    Logo
+  },
+
+  computed: {
+    open () {
+      return this.items.filter(item => !item.done)
+    }
+  },
+
+  data () {
+    return {
+      items: [
+        {
+          id: 1,
+          title: 'SoCraTes 2017 Demo vorbereiten',
+          done: false
+        },
+        {
+          id: 2,
+          title: 'better.co.at promoten',
+          done: false
+        }
+      ]
+    }
   }
 }
 </script>
 
 <style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>

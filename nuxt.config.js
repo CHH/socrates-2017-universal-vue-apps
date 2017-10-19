@@ -17,10 +17,16 @@ module.exports = {
   ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
+
+  css: [
+    'bootstrap/scss/bootstrap.scss'
+  ],
+
   /*
   ** Build configuration
   */
   build: {
+
     /*
     ** Run ESLint on save
     */
