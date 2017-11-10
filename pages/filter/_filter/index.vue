@@ -51,6 +51,7 @@
 import TodoItem from '~/components/TodoItem.vue'
 import TodoEditor from '~/components/TodoEditor.vue'
 import { mapState, mapGetters } from 'vuex'
+import { DONE, SET_FILTER, UPDATE_ITEM } from '~/store/mutation-types'
 
 export default {
   components: {
@@ -76,12 +77,12 @@ export default {
 
   methods: {
     async setFilter (filter) {
-      this.$store.commit('setFilter', { filter })
+      this.$store.commit(SET_FILTER, { filter })
       return this.$store.dispatch('refresh')
     },
 
     async done (item) {
-      this.$store.commit('done', { item, done: !item.done })
+      this.$store.commit(DONE, { item, done: !item.done })
 
       return this.$store.dispatch('saveItem', { item })
     },
@@ -93,7 +94,7 @@ export default {
 
     async save ({ title }) {
       if (this.currentlyEditingItem.id) {
-        this.$store.commit('update', {item: this.currentlyEditingItem, props: {title}})
+        this.$store.commit(UPDATE_ITEM, {item: this.currentlyEditingItem, props: {title}})
         await this.$store.dispatch('saveItem', {item: {...this.currentlyEditingItem, title}})
       } else {
         await this.$store.dispatch('addItem', {item: {...this.currentlyEditingItem, title}})
@@ -124,7 +125,7 @@ export default {
 
   async created () {
     if (process.browser) {
-      this.$store.commit('setFilter', { filter: this.$route.params.filter })
+      this.$store.commit(SET_FILTER, { filter: this.$route.params.filter })
       return this.$store.dispatch('refresh')
     }
   }

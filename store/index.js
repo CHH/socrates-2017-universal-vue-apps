@@ -1,4 +1,5 @@
 import * as api from '~/api/todolist'
+import { SET_ITEMS, ADD_ITEM, DONE, UPDATE_ITEM, REMOVE_ITEM, SET_FILTER } from './mutation-types';
 
 export const state = () => ({
   items: [],
@@ -20,15 +21,15 @@ export const getters = {
 }
 
 export const mutations = {
-  setItems (state, { items }) {
+  [SET_ITEMS] (state, { items }) {
     state.items = items
   },
 
-  add (state, { item }) {
+  [ADD_ITEM] (state, { item }) {
     state.items.push(item)
   },
 
-  done (state, { item, done }) {
+  [DONE] (state, { item, done }) {
     item.done = done
 
     // Remove item from the current list if the item is closed and viewing only open items
@@ -40,7 +41,7 @@ export const mutations = {
     }
   },
 
-  update (state, { item, props }) {
+  [UPDATE_ITEM] (state, { item, props }) {
     const items = [...state.items]
     const index = state.items.indexOf(item)
     items[index] = {...item, ...props}
@@ -48,11 +49,11 @@ export const mutations = {
     state.items = items
   },
 
-  remove (state, { item }) {
+  [REMOVE_ITEM] (state, { item }) {
     state.items = state.items.filter(it => it !== item)
   },
 
-  setFilter (state, { filter }) {
+  [SET_FILTER] (state, { filter }) {
     state.filter = filter
   }
 }
@@ -61,22 +62,22 @@ export const actions = {
   async refresh ({ commit, state }) {
     const items = await api.findAll({ filter: state.filter })
 
-    commit('setItems', { items })
+    commit(SET_ITEMS, { items })
   },
 
   async addItem ({ commit }, { item }) {
-    commit('add', { item })
+    commit(ADD_ITEM, { item })
 
     let addedItem = await api.save({
       title: item.title,
       done: false
     })
 
-    commit('update', {item, props: {id: addedItem.id}})
+    commit(UPDATE_ITEM, {item, props: {id: addedItem.id}})
   },
 
   async removeItem ({ commit }, { item }) {
-    commit('remove', { item })
+    commit(REMOVE_ITEM, { item })
     return api.remove(item)
   },
 
