@@ -1,5 +1,5 @@
 import * as api from '~/api/todolist'
-import { SET_ITEMS, ADD_ITEM, DONE, UPDATE_ITEM, REMOVE_ITEM, SET_FILTER } from './mutation-types';
+import { SET_ITEMS, ADD_ITEM, DONE, UPDATE_ITEM, REMOVE_ITEM, SET_FILTER } from './mutation-types'
 
 export const state = () => ({
   items: [],
